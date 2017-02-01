@@ -36,8 +36,6 @@ public class Client implements AutoCloseable {
 
     public class ClientException extends Exception
     {
-        public ClientException() {}
-
         public ClientException(String message) {
             super(message);
         }
@@ -109,6 +107,22 @@ public class Client implements AutoCloseable {
      * @param push_address: Address of the push service of the server to pull from.
      * @param sub_address: Address of the pub service of the server to subscribe to.
      * @param pipeline: Name of the pipeline if the session has to be reused.
+     */
+    public Client(final String server_name,
+                  final String db_address,
+                  final String push_address,
+                  final String sub_address,
+                  final String pipeline) throws ClientException {
+        this(server_name, db_address, push_address, sub_address, pipeline, Level.INFO, false, 1000);
+    }
+
+    /**
+     *
+     * @param server_name: Server you are connecting to.
+     * @param db_address: Address for cache service, for first connectio or configuration.
+     * @param push_address: Address of the push service of the server to pull from.
+     * @param sub_address: Address of the pub service of the server to subscribe to.
+     * @param pipeline: Name of the pipeline if the session has to be reused.
      * @param logging_level: Specify the logging level
      * @param this_config: Do not fetch configuration from server.
      */
@@ -119,6 +133,28 @@ public class Client implements AutoCloseable {
                   final String pipeline,
                   final Level logging_level,
                   final boolean this_config) throws ClientException {
+        this(server_name, db_address, push_address, sub_address, pipeline, logging_level, this_config, 1000);
+    }
+
+    /**
+     *
+     * @param server_name: Server you are connecting to.
+     * @param db_address: Address for cache service, for first connectio or configuration.
+     * @param push_address: Address of the push service of the server to pull from.
+     * @param sub_address: Address of the pub service of the server to subscribe to.
+     * @param pipeline: Name of the pipeline if the session has to be reused.
+     * @param logging_level: Specify the logging level
+     * @param this_config: Do not fetch configuration from server.
+     * @param initializtion_time: Time in milliseconds to wait until finish initilization finish.
+     */
+    public Client(final String server_name,
+                  final String db_address,
+                  final String push_address,
+                  final String sub_address,
+                  final String pipeline,
+                  final Level logging_level,
+                  final boolean this_config,
+                  final long initializtion_time) throws ClientException {
         if(logging_level != null) {
             logger.setLevel(logging_level);
         }
@@ -168,7 +204,7 @@ public class Client implements AutoCloseable {
                 this.sub_address = sub_address;
             }
             if(push_address == null) {
-                this.push_address = this.getString("'pull_address'");
+                this.push_address = this.getString("pull_address");
             }
             else {
                 this.push_address = sub_address;
@@ -182,7 +218,7 @@ public class Client implements AutoCloseable {
         logger.info("CLIENT" + uuid + " push address: " + this.push_address);
 
         try {
-            Thread.sleep(500, 0);
+            Thread.sleep(initializtion_time, 0);
         } catch (InterruptedException e) {
             logger.warn("CLIENT initialization interrupted" );
         }
@@ -245,7 +281,7 @@ public class Client implements AutoCloseable {
 
                     @Override
                     public boolean hasNext() {
-                        return i>=messages;
+                        return i<messages;
                     }
 
                     @Override
@@ -312,6 +348,18 @@ public class Client implements AutoCloseable {
         return recv_multipartString(sub_socket, messages);
     }
 
+    public Iterable<String> jobString(final String function, final Iterable<ByteString> generator, final int messages) {
+        final ZMQ.Socket sub_socket = ctx.createSocket(ZMQ.SUB);
+        sub_socket.connect(this.sub_address);
+        sub_socket.subscribe(this.uuidB);
+
+        // Remember that sockets are not thread safe and runs in background.
+        final Sender_Thread sender_thread = new Sender_Thread(function, generator, null);
+        sender_thread.start();
+
+        return recv_multipartString(sub_socket, messages);
+    }
+
     /**
      *
      * Execute single evaluation.
@@ -345,6 +393,108 @@ public class Client implements AutoCloseable {
         return recv_multipartList(sub_socket, messages);
     }
 
+    /**
+     *
+     * Execute single evaluation.
+     *
+     * @param function
+     * @param payload
+     * @param messages
+     *
+     * @return
+     */
+    public List<ByteString> eval(final String function, final ByteString payload,
+                                 final int messages) throws ClientException {
+        return eval(function, payload, messages, null);
+    }
+
+    /**
+     *
+     * Execute single evaluation.
+     *
+     * @param function
+     * @param payload
+     * @param cache
+     *
+     * @return
+     */
+    public ByteString eval(final String function, final ByteString payload,
+                                 final String cache) throws ClientException {
+        return eval(function, payload, 1, cache).get(0);
+    }
+
+    /**
+     *
+     * Execute single evaluation.
+     *
+     * @param function
+     * @param payload
+     *
+     * @return
+     */
+    public ByteString eval(final String function, final ByteString payload) throws ClientException {
+        return eval(function, payload, 1, null).get(0);
+    }
+
+    /**
+     *
+     * Execute single evaluation.
+     *
+     * @param function
+     * @param payload: must implement toString
+     * @param messages
+     * @param cache
+     *
+     * @return
+     */
+    public List<ByteString> eval(final String function, final Object payload,
+                                 final int messages, final String cache) throws ClientException {
+        return eval(function, ByteString.copyFromUtf8(payload.toString()), messages, cache);
+    }
+
+    /**
+     *
+     * Execute single evaluation.
+     *
+     * @param function
+     * @param payload: must implement toString
+     * @param messages
+     *
+     * @return
+     */
+    public List<ByteString> eval(final String function, final Object payload,
+                                 final int messages) throws ClientException {
+        return eval(function, ByteString.copyFromUtf8(payload.toString()), messages, null);
+    }
+
+    /**
+     *
+     * Execute single evaluation.
+     *
+     * @param function
+     * @param payload: must implement toString
+     * @param cache
+     *
+     * @return
+     */
+    public ByteString eval(final String function, final Object payload,
+                                 final String cache) throws ClientException {
+        return eval(function, ByteString.copyFromUtf8(payload.toString()), 1, cache).get(0);
+    }
+
+    /**
+     *
+     * Execute single evaluation.
+     *
+     * @param function
+     * @param payload: must implement toString
+     *
+     * @return
+     */
+    public ByteString eval(final String function, final Object payload) throws ClientException {
+        return eval(function, ByteString.copyFromUtf8(payload.toString()), 1, null).get(0);
+    }
+
     public List<String> evalString(final String function, final ByteString payload,
                                  final int messages, final String cache) throws ClientException {
         final ZMQ.Socket push_socket = ctx.createSocket(ZMQ.PUSH);
@@ -365,6 +515,108 @@ public class Client implements AutoCloseable {
         push_socket.send(messageBuilder.build().toByteArray());
 
         return recv_multipartStringList(sub_socket, messages);
+    }
+
+    /**
+     *
+     * Execute single evaluation.
+     *
+     * @param function
+     * @param payload
+     * @param messages
+     *
+     * @return
+     */
+    public List<String> evalString(final String function, final ByteString payload,
+                                 final int messages) throws ClientException {
+        return evalString(function, payload, messages, null);
+    }
+
+    /**
+     *
+     * Execute single evaluation.
+     *
+     * @param function
+     * @param payload
+     * @param cache
+     *
+     * @return
+     */
+    public String evalString(final String function, final ByteString payload,
+                                 final String cache) throws ClientException {
+        return evalString(function, payload, 1, cache).get(0);
+    }
+
+    /**
+     *
+     * Execute single evaluation.
+     *
+     * @param function
+     * @param payload
+     *
+     * @return
+     */
+    public String evalString(final String function, final ByteString payload) throws ClientException {
+        return evalString(function, payload, 1, null).get(0);
+    }
+
+    /**
+     *
+     * Execute single evaluation.
+     *
+     * @param function
+     * @param payload: must implement toString
+     * @param messages
+     * @param cache
+     *
+     * @return
+     */
+    public List<String> evalString(final String function, final Object payload,
+                                 final int messages, final String cache) throws ClientException {
+        return evalString(function, ByteString.copyFromUtf8(payload.toString()), messages, cache);
+    }
+
+    /**
+     *
+     * Execute single evaluation.
+     *
+     * @param function
+     * @param payload: must implement toString
+     * @param messages
+     *
+     * @return
+     */
+    public List<String> evalString(final String function, final Object payload,
+                                 final int messages) throws ClientException {
+        return evalString(function, ByteString.copyFromUtf8(payload.toString()), messages, null);
+    }
+
+    /**
+     *
+     * Execute single evaluation.
+     *
+     * @param function
+     * @param payload: must implement toString
+     * @param cache
+     *
+     * @return
+     */
+    public String evalString(final String function, final Object payload,
+                                 final String cache) throws ClientException {
+        return evalString(function, ByteString.copyFromUtf8(payload.toString()), 1, cache).get(0);
+    }
+
+    /**
+     *
+     * Execute single evaluation.
+     *
+     * @param function
+     * @param payload: must implement toString
+     *
+     * @return
+     */
+    public String evalString(final String function, final Object payload) throws ClientException {
+        return evalString(function, ByteString.copyFromUtf8(payload.toString()), 1, null).get(0);
     }
 
     /**
