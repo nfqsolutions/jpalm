@@ -127,7 +127,7 @@ public class Client implements AutoCloseable {
             uuidB = this.uuid.toString().getBytes("utf-8");
         } catch (UnsupportedEncodingException e) {
             logger.warn("Couldn't set identity to database socket", e);
-            throw new ClientException("Error encoding uuid");
+            throw new ClientException("Error encoding uuid", e);
         }
 
         this.server_name = server_name;
