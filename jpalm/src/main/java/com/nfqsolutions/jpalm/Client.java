@@ -55,7 +55,16 @@ public class Client implements AutoCloseable {
                         final String cache) {
 
             this.function = function;
-            this.generator =generator;
+            this.generator = generator;
+            this.cache = cache;
+        }
+
+        Sender_Thread(final String function, final ByteString item,
+                      final String cache) {
+            List<ByteString> l = new ArrayList<ByteString>(1);
+            l.add(item);
+            this.function = function;
+            this.generator = l;
             this.cache = cache;
         }
 
@@ -100,6 +109,30 @@ public class Client implements AutoCloseable {
 
     private final boolean session_set;
 
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public ZMQ.Socket getDb() {
+        return db;
+    }
+
+    public String getSub_address() {
+        return sub_address;
+    }
+
+    public String getPush_address() {
+        return push_address;
+    }
+
+    public String getServer_name() {
+        return server_name;
+    }
+
+    public String getPipeline() {
+        return pipeline;
+    }
+
     /**
      *
      * @param server_name: Server you are connecting to.
@@ -107,6 +140,8 @@ public class Client implements AutoCloseable {
      * @param push_address: Address of the push service of the server to pull from.
      * @param sub_address: Address of the pub service of the server to subscribe to.
      * @param pipeline: Name of the pipeline if the session has to be reused.
+     *
+     * @throws ClientException if something goes wrong
      */
     public Client(final String server_name,
                   final String db_address,
@@ -125,6 +160,8 @@ public class Client implements AutoCloseable {
      * @param pipeline: Name of the pipeline if the session has to be reused.
      * @param logging_level: Specify the logging level
      * @param this_config: Do not fetch configuration from server.
+     *
+     * @throws ClientException if something goes wrong
      */
     public Client(final String server_name,
                   final String db_address,
@@ -146,6 +183,7 @@ public class Client implements AutoCloseable {
      * @param logging_level: Specify the logging level
      * @param this_config: Do not fetch configuration from server.
      * @param initializtion_time: Time in milliseconds to wait until finish initilization finish.
+     * @throws ClientException if something goes wrong
      */
     public Client(final String server_name,
                   final String db_address,
@@ -191,26 +229,21 @@ public class Client implements AutoCloseable {
         else
             logger.info("Fetching configuration from the server");
 
-        final String name;
-        try {
-            name = this.getString("name");
-            if(!name.equals(this.server_name)) {
-                throw new ClientException("You are connecting to the wrong server");
-            }
-            if(sub_address == null) {
-                this.sub_address = this.getString("pub_address");
-            }
-            else {
-                this.sub_address = sub_address;
-            }
-            if(push_address == null) {
-                this.push_address = this.getString("pull_address");
-            }
-            else {
-                this.push_address = sub_address;
-            }
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("error reading from name from database.", e);
+        final String name = this.getString("name");
+        if(!name.equals(this.server_name)) {
+            throw new ClientException("You are connecting to the wrong server");
+        }
+        if(sub_address == null) {
+            this.sub_address = this.getString("pub_address");
+        }
+        else {
+            this.sub_address = sub_address;
+        }
+        if(push_address == null) {
+            this.push_address = this.getString("pull_address");
+        }
+        else {
+            this.push_address = sub_address;
         }
 
         logger.info("CLIENT" + uuid + " database address: " + db_address);
@@ -224,10 +257,16 @@ public class Client implements AutoCloseable {
         }
     }
 
+    /**
+     * Clean the state of the client.
+     */
     public void clean() {
         this.db.close();
     }
 
+    /**
+     * Close the state of the client cleaning.
+     */
     public void close() throws Exception {
         this.clean();
     }
@@ -312,17 +351,15 @@ public class Client implements AutoCloseable {
         };
     }
 
-    public Iterable<ByteString> job(final String function, final Iterable<ByteString> generator, final String cache) {
-        return job(function, generator, cache, Integer.MAX_VALUE);
-    }
-
     /**
+     * Send Job
      *
-     * @param function
-     * @param generator
-     * @param cache
-     * @param messages
-     * @return
+     * @param function: function to execute
+     * @param generator: data to provide
+     * @param cache: cache
+     * @param messages: number of messages
+     *
+     * @return result of the function
      */
     public Iterable<ByteString> job(final String function, final Iterable<ByteString> generator, final String cache, final int messages) {
         final ZMQ.Socket sub_socket = ctx.createSocket(ZMQ.SUB);
@@ -334,6 +371,10 @@ public class Client implements AutoCloseable {
         sender_thread.start();
 
         return recv_multipart(sub_socket, messages);
+    }
+
+    public Iterable<ByteString> job(final String function, final Iterable<ByteString> generator, final String cache) {
+        return job(function, generator, cache, Integer.MAX_VALUE);
     }
 
     public Iterable<String> jobString(final String function, final Iterable<ByteString> generator, final String cache, final int messages) {
@@ -361,15 +402,66 @@ public class Client implements AutoCloseable {
     }
 
     /**
+     * Send Job
+     *
+     * @param function: function to execute
+     * @param item: data to provide
+     * @param cache: cache
+     * @param messages: number of messages
+     *
+     * @return result of the function
+     */
+    public Iterable<ByteString> job(final String function, final ByteString item, final String cache, final int messages) {
+        final ZMQ.Socket sub_socket = ctx.createSocket(ZMQ.SUB);
+        sub_socket.connect(this.sub_address);
+        sub_socket.subscribe(this.uuidB);
+
+        // Remember that sockets are not thread safe and runs in background.
+        final Sender_Thread sender_thread = new Sender_Thread(function, item, cache);
+        sender_thread.start();
+
+        return recv_multipart(sub_socket, messages);
+    }
+
+    public Iterable<ByteString> job(final String function, final ByteString item, final String cache) {
+        return job(function, item, cache, Integer.MAX_VALUE);
+    }
+
+    public Iterable<String> jobString(final String function, final ByteString item, final String cache, final int messages) {
+        final ZMQ.Socket sub_socket = ctx.createSocket(ZMQ.SUB);
+        sub_socket.connect(this.sub_address);
+        sub_socket.subscribe(this.uuidB);
+
+        // Remember that sockets are not thread safe and runs in background.
+        final Sender_Thread sender_thread = new Sender_Thread(function, item, cache);
+        sender_thread.start();
+
+        return recv_multipartString(sub_socket, messages);
+    }
+
+    public Iterable<String> jobString(final String function, final ByteString item, final int messages) {
+        final ZMQ.Socket sub_socket = ctx.createSocket(ZMQ.SUB);
+        sub_socket.connect(this.sub_address);
+        sub_socket.subscribe(this.uuidB);
+
+        // Remember that sockets are not thread safe and runs in background.
+        final Sender_Thread sender_thread = new Sender_Thread(function, item, null);
+        sender_thread.start();
+
+        return recv_multipartString(sub_socket, messages);
+    }
+
+    /**
      *
      * Execute single evaluation.
      *
-     * @param function
-     * @param payload
-     * @param messages
-     * @param cache
+     * @param function: function to execute
+     * @param payload: data
+     * @param messages number of messages
+     * @param cache: cache
+     * @throws ClientException if something wrong if something wrong
      *
-     * @return
+     * @return List of results
      */
     public List<ByteString> eval(final String function, final ByteString payload,
                                  final int messages, final String cache) throws ClientException {
@@ -397,11 +489,12 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
-     * @param function
-     * @param payload
-     * @param messages
+     * @param function: function to execute
+     * @param payload: data
+     * @param messages number of messages
      *
-     * @return
+     * @return List of results
+     * @throws ClientException if something wrong
      */
     public List<ByteString> eval(final String function, final ByteString payload,
                                  final int messages) throws ClientException {
@@ -412,11 +505,12 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
-     * @param function
-     * @param payload
-     * @param cache
+     * @param function: function to execute
+     * @param payload: data
+     * @param cache cache
      *
-     * @return
+     * @return List of results
+     * @throws ClientException if something wrong
      */
     public ByteString eval(final String function, final ByteString payload,
                                  final String cache) throws ClientException {
@@ -427,10 +521,11 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
-     * @param function
-     * @param payload
+     * @param function: function to execute
+     * @param payload: data
      *
-     * @return
+     * @return List of results
+     * @throws ClientException if something wrong
      */
     public ByteString eval(final String function, final ByteString payload) throws ClientException {
         return eval(function, payload, 1, null).get(0);
@@ -440,12 +535,13 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
-     * @param function
+     * @param function function to execute
      * @param payload: must implement toString
-     * @param messages
-     * @param cache
+     * @param messages number of messages
+     * @param cache cache
      *
-     * @return
+     * @return List of results
+     * @throws ClientException if something wrong
      */
     public List<ByteString> eval(final String function, final Object payload,
                                  final int messages, final String cache) throws ClientException {
@@ -456,11 +552,12 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
-     * @param function
+     * @param function function to execute
      * @param payload: must implement toString
-     * @param messages
+     * @param messages number of messages
      *
-     * @return
+     * @return List of results
+     * @throws ClientException if something wrong
      */
     public List<ByteString> eval(final String function, final Object payload,
                                  final int messages) throws ClientException {
@@ -471,11 +568,12 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
-     * @param function
+     * @param function function to execute
      * @param payload: must implement toString
-     * @param cache
+     * @param cache cache
      *
-     * @return
+     * @return List of results
+     * @throws ClientException if something wrong
      */
     public ByteString eval(final String function, final Object payload,
                                  final String cache) throws ClientException {
@@ -486,10 +584,11 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
-     * @param function
+     * @param function function to execute
      * @param payload: must implement toString
      *
-     * @return
+     * @return List of results
+     * @throws ClientException if something wrong
      */
     public ByteString eval(final String function, final Object payload) throws ClientException {
         return eval(function, ByteString.copyFromUtf8(payload.toString()), 1, null).get(0);
@@ -521,11 +620,12 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
-     * @param function
-     * @param payload
-     * @param messages
+     * @param function function to execute
+     * @param payload data
+     * @param messages number of messages
      *
-     * @return
+     * @return List of results
+     * @throws ClientException if something wrong
      */
     public List<String> evalString(final String function, final ByteString payload,
                                  final int messages) throws ClientException {
@@ -536,11 +636,12 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
-     * @param function
-     * @param payload
-     * @param cache
+     * @param function function to execute
+     * @param payload data
+     * @param cache cache
      *
-     * @return
+     * @return List of results
+     * @throws ClientException if something wrong
      */
     public String evalString(final String function, final ByteString payload,
                                  final String cache) throws ClientException {
@@ -551,10 +652,11 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
-     * @param function
-     * @param payload
+     * @param function function to execute
+     * @param payload data
      *
-     * @return
+     * @return List of results
+     * @throws ClientException if something wrong
      */
     public String evalString(final String function, final ByteString payload) throws ClientException {
         return evalString(function, payload, 1, null).get(0);
@@ -564,12 +666,13 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
-     * @param function
+     * @param function function to execute
      * @param payload: must implement toString
-     * @param messages
-     * @param cache
+     * @param messages number of messages
+     * @param cache cache
      *
-     * @return
+     * @return List of results
+     * @throws ClientException if something wrong
      */
     public List<String> evalString(final String function, final Object payload,
                                  final int messages, final String cache) throws ClientException {
@@ -580,11 +683,12 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
-     * @param function
+     * @param function function to execute
      * @param payload: must implement toString
-     * @param messages
+     * @param messages number of messages
      *
-     * @return
+     * @return List of results
+     * @throws ClientException if something wrong
      */
     public List<String> evalString(final String function, final Object payload,
                                  final int messages) throws ClientException {
@@ -595,11 +699,12 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
-     * @param function
+     * @param function function to execute
      * @param payload: must implement toString
-     * @param cache
+     * @param cache cache
      *
-     * @return
+     * @return List of results
+     * @throws ClientException if something wrong
      */
     public String evalString(final String function, final Object payload,
                                  final String cache) throws ClientException {
@@ -610,10 +715,11 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
-     * @param function
+     * @param function function to execute
      * @param payload: must implement toString
      *
-     * @return
+     * @return List of results
+     * @throws ClientException if something wrong
      */
     public String evalString(final String function, final Object payload) throws ClientException {
         return evalString(function, ByteString.copyFromUtf8(payload.toString()), 1, null).get(0);
@@ -629,8 +735,9 @@ public class Client implements AutoCloseable {
      * @param key Key for the k-v storage. It use toString method.
      *
      * @return new key or the same key
+     * @throws ClientException if something wrong
      */
-    public String set(final ByteString value, final Object key) throws UnsupportedEncodingException {
+    public String set(final ByteString value, final Object key) {
         final Messages.PalmMessage.Builder messageBuilder = Messages.PalmMessage.newBuilder();
         messageBuilder.setPipeline(UUID.randomUUID().toString());  // For a set job, the pipeline is not important
         messageBuilder.setClient(this.uuid.toString());
@@ -646,20 +753,24 @@ public class Client implements AutoCloseable {
         return ByteString.copyFrom(this.db.recv()).toStringUtf8();
     }
 
-    public String set(final byte[] value, final Object key) throws UnsupportedEncodingException {
+    public String set(final byte[] value, final Object key) {
         return set(ByteString.copyFrom(value), key);
     }
 
-    public String set(final String value, final Object key) throws UnsupportedEncodingException {
+    public String set(final String value, final Object key) {
         return set(ByteString.copyFromUtf8(value), key);
     }
 
-    public String set(final ByteBuffer value, final Object key) throws UnsupportedEncodingException {
+    public String set(final ByteBuffer value, final Object key) {
         return set(ByteString.copyFrom(value), key);
     }
 
-    public String set(final InputStream value, final Object key) throws IOException {
-        return set(ByteString.readFrom(value), key);
+    public String set(final InputStream value, final Object key) throws ClientException {
+        try {
+            return set(ByteString.readFrom(value), key);
+        } catch (IOException e) {
+            throw new ClientException("IO error readgin from InputStream", e);
+        }
     }
 
     /**
@@ -670,7 +781,7 @@ public class Client implements AutoCloseable {
      *
      * @return new value.
      */
-    public byte[] get(final Object key) throws UnsupportedEncodingException {
+    public byte[] get(final Object key) {
         final Messages.PalmMessage.Builder messageBuilder = Messages.PalmMessage.newBuilder();
         messageBuilder.setPipeline(UUID.randomUUID().toString());  // For a set job, the pipeline is not important
         messageBuilder.setClient(this.uuid.toString());
@@ -682,15 +793,15 @@ public class Client implements AutoCloseable {
         return this.db.recv();
     }
 
-    public ByteString getByteString(final Object key) throws UnsupportedEncodingException {
+    public ByteString getByteString(final Object key) throws ClientException {
         return ByteString.copyFrom(get(key));
     }
 
-    public String getString(final Object key) throws UnsupportedEncodingException {
+    public String getString(final Object key) throws ClientException {
         return getByteString(key).toStringUtf8();
     }
 
-    public ByteBuffer getByteBuffer(final Object key) throws UnsupportedEncodingException {
+    public ByteBuffer getByteBuffer(final Object key) throws ClientException {
         return ByteBuffer.wrap(get(key));
     }
 
@@ -700,7 +811,6 @@ public class Client implements AutoCloseable {
      *
      * @param key Key for the k-v storage. It use toString method.
      *
-     * @return new value.
      */
     public void delete(final Object key) {
         final Messages.PalmMessage.Builder messageBuilder = Messages.PalmMessage.newBuilder();
