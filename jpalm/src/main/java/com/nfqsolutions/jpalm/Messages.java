@@ -19,94 +19,52 @@ public final class Messages {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>required string pipeline = 1;</code>
-     */
-    boolean hasPipeline();
-    /**
-     * <code>required string pipeline = 1;</code>
+     * <code>string pipeline = 1;</code>
      */
     java.lang.String getPipeline();
     /**
-     * <code>required string pipeline = 1;</code>
+     * <code>string pipeline = 1;</code>
      */
     com.google.protobuf.ByteString
         getPipelineBytes();
 
     /**
-     * <code>required string client = 2;</code>
-     */
-    boolean hasClient();
-    /**
-     * <code>required string client = 2;</code>
+     * <code>string client = 2;</code>
      */
     java.lang.String getClient();
     /**
-     * <code>required string client = 2;</code>
+     * <code>string client = 2;</code>
      */
     com.google.protobuf.ByteString
         getClientBytes();
 
     /**
-     * <code>required int64 stage = 3;</code>
-     */
-    boolean hasStage();
-    /**
-     * <code>required int64 stage = 3;</code>
+     * <code>int64 stage = 3;</code>
      */
     long getStage();
 
     /**
-     * <code>required string function = 4;</code>
-     */
-    boolean hasFunction();
-    /**
-     * <code>required string function = 4;</code>
+     * <code>string function = 4;</code>
      */
     java.lang.String getFunction();
     /**
-     * <code>required string function = 4;</code>
+     * <code>string function = 4;</code>
      */
     com.google.protobuf.ByteString
         getFunctionBytes();
 
     /**
-     * <code>optional int64 idx = 5;</code>
-     */
-    boolean hasIdx();
-    /**
-     * <code>optional int64 idx = 5;</code>
-     */
-    long getIdx();
-
-    /**
-     * <code>optional bool end = 6;</code>
-     */
-    boolean hasEnd();
-    /**
-     * <code>optional bool end = 6;</code>
-     */
-    boolean getEnd();
-
-    /**
-     * <code>optional string cache = 7;</code>
-     */
-    boolean hasCache();
-    /**
-     * <code>optional string cache = 7;</code>
+     * <code>string cache = 5;</code>
      */
     java.lang.String getCache();
     /**
-     * <code>optional string cache = 7;</code>
+     * <code>string cache = 5;</code>
      */
     com.google.protobuf.ByteString
         getCacheBytes();
 
     /**
-     * <code>optional bytes payload = 8;</code>
-     */
-    boolean hasPayload();
-    /**
-     * <code>optional bytes payload = 8;</code>
+     * <code>bytes payload = 6;</code>
      */
     com.google.protobuf.ByteString getPayload();
   }
@@ -126,8 +84,6 @@ public final class Messages {
       client_ = "";
       stage_ = 0L;
       function_ = "";
-      idx_ = 0L;
-      end_ = false;
       cache_ = "";
       payload_ = com.google.protobuf.ByteString.EMPTY;
     }
@@ -135,7 +91,7 @@ public final class Messages {
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return this.unknownFields;
+      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
     }
     private PalmMessage(
         com.google.protobuf.CodedInputStream input,
@@ -143,8 +99,6 @@ public final class Messages {
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
       int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -154,53 +108,42 @@ public final class Messages {
               done = true;
               break;
             default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
+              if (!input.skipField(tag)) {
                 done = true;
               }
               break;
             }
             case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              pipeline_ = bs;
+              java.lang.String s = input.readStringRequireUtf8();
+
+              pipeline_ = s;
               break;
             }
             case 18: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000002;
-              client_ = bs;
+              java.lang.String s = input.readStringRequireUtf8();
+
+              client_ = s;
               break;
             }
             case 24: {
-              bitField0_ |= 0x00000004;
+
               stage_ = input.readInt64();
               break;
             }
             case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000008;
-              function_ = bs;
+              java.lang.String s = input.readStringRequireUtf8();
+
+              function_ = s;
               break;
             }
-            case 40: {
-              bitField0_ |= 0x00000010;
-              idx_ = input.readInt64();
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              cache_ = s;
               break;
             }
-            case 48: {
-              bitField0_ |= 0x00000020;
-              end_ = input.readBool();
-              break;
-            }
-            case 58: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000040;
-              cache_ = bs;
-              break;
-            }
-            case 66: {
-              bitField0_ |= 0x00000080;
+            case 50: {
+
               payload_ = input.readBytes();
               break;
             }
@@ -212,7 +155,6 @@ public final class Messages {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -228,17 +170,10 @@ public final class Messages {
               com.nfqsolutions.jpalm.Messages.PalmMessage.class, com.nfqsolutions.jpalm.Messages.PalmMessage.Builder.class);
     }
 
-    private int bitField0_;
     public static final int PIPELINE_FIELD_NUMBER = 1;
     private volatile java.lang.Object pipeline_;
     /**
-     * <code>required string pipeline = 1;</code>
-     */
-    public boolean hasPipeline() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required string pipeline = 1;</code>
+     * <code>string pipeline = 1;</code>
      */
     public java.lang.String getPipeline() {
       java.lang.Object ref = pipeline_;
@@ -248,14 +183,12 @@ public final class Messages {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          pipeline_ = s;
-        }
+        pipeline_ = s;
         return s;
       }
     }
     /**
-     * <code>required string pipeline = 1;</code>
+     * <code>string pipeline = 1;</code>
      */
     public com.google.protobuf.ByteString
         getPipelineBytes() {
@@ -274,13 +207,7 @@ public final class Messages {
     public static final int CLIENT_FIELD_NUMBER = 2;
     private volatile java.lang.Object client_;
     /**
-     * <code>required string client = 2;</code>
-     */
-    public boolean hasClient() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required string client = 2;</code>
+     * <code>string client = 2;</code>
      */
     public java.lang.String getClient() {
       java.lang.Object ref = client_;
@@ -290,14 +217,12 @@ public final class Messages {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          client_ = s;
-        }
+        client_ = s;
         return s;
       }
     }
     /**
-     * <code>required string client = 2;</code>
+     * <code>string client = 2;</code>
      */
     public com.google.protobuf.ByteString
         getClientBytes() {
@@ -316,13 +241,7 @@ public final class Messages {
     public static final int STAGE_FIELD_NUMBER = 3;
     private long stage_;
     /**
-     * <code>required int64 stage = 3;</code>
-     */
-    public boolean hasStage() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>required int64 stage = 3;</code>
+     * <code>int64 stage = 3;</code>
      */
     public long getStage() {
       return stage_;
@@ -331,13 +250,7 @@ public final class Messages {
     public static final int FUNCTION_FIELD_NUMBER = 4;
     private volatile java.lang.Object function_;
     /**
-     * <code>required string function = 4;</code>
-     */
-    public boolean hasFunction() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>required string function = 4;</code>
+     * <code>string function = 4;</code>
      */
     public java.lang.String getFunction() {
       java.lang.Object ref = function_;
@@ -347,14 +260,12 @@ public final class Messages {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          function_ = s;
-        }
+        function_ = s;
         return s;
       }
     }
     /**
-     * <code>required string function = 4;</code>
+     * <code>string function = 4;</code>
      */
     public com.google.protobuf.ByteString
         getFunctionBytes() {
@@ -370,46 +281,10 @@ public final class Messages {
       }
     }
 
-    public static final int IDX_FIELD_NUMBER = 5;
-    private long idx_;
-    /**
-     * <code>optional int64 idx = 5;</code>
-     */
-    public boolean hasIdx() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
-    }
-    /**
-     * <code>optional int64 idx = 5;</code>
-     */
-    public long getIdx() {
-      return idx_;
-    }
-
-    public static final int END_FIELD_NUMBER = 6;
-    private boolean end_;
-    /**
-     * <code>optional bool end = 6;</code>
-     */
-    public boolean hasEnd() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
-    }
-    /**
-     * <code>optional bool end = 6;</code>
-     */
-    public boolean getEnd() {
-      return end_;
-    }
-
-    public static final int CACHE_FIELD_NUMBER = 7;
+    public static final int CACHE_FIELD_NUMBER = 5;
     private volatile java.lang.Object cache_;
     /**
-     * <code>optional string cache = 7;</code>
-     */
-    public boolean hasCache() {
-      return ((bitField0_ & 0x00000040) == 0x00000040);
-    }
-    /**
-     * <code>optional string cache = 7;</code>
+     * <code>string cache = 5;</code>
      */
     public java.lang.String getCache() {
       java.lang.Object ref = cache_;
@@ -419,14 +294,12 @@ public final class Messages {
         com.google.protobuf.ByteString bs = 
             (com.google.protobuf.ByteString) ref;
         java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          cache_ = s;
-        }
+        cache_ = s;
         return s;
       }
     }
     /**
-     * <code>optional string cache = 7;</code>
+     * <code>string cache = 5;</code>
      */
     public com.google.protobuf.ByteString
         getCacheBytes() {
@@ -442,16 +315,10 @@ public final class Messages {
       }
     }
 
-    public static final int PAYLOAD_FIELD_NUMBER = 8;
+    public static final int PAYLOAD_FIELD_NUMBER = 6;
     private com.google.protobuf.ByteString payload_;
     /**
-     * <code>optional bytes payload = 8;</code>
-     */
-    public boolean hasPayload() {
-      return ((bitField0_ & 0x00000080) == 0x00000080);
-    }
-    /**
-     * <code>optional bytes payload = 8;</code>
+     * <code>bytes payload = 6;</code>
      */
     public com.google.protobuf.ByteString getPayload() {
       return payload_;
@@ -463,53 +330,30 @@ public final class Messages {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
-      if (!hasPipeline()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasClient()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasStage()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasFunction()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
       memoizedIsInitialized = 1;
       return true;
     }
 
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+      if (!getPipelineBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 1, pipeline_);
       }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+      if (!getClientBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, client_);
       }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+      if (stage_ != 0L) {
         output.writeInt64(3, stage_);
       }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+      if (!getFunctionBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 4, function_);
       }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt64(5, idx_);
+      if (!getCacheBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, cache_);
       }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeBool(6, end_);
+      if (!payload_.isEmpty()) {
+        output.writeBytes(6, payload_);
       }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, cache_);
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        output.writeBytes(8, payload_);
-      }
-      unknownFields.writeTo(output);
     }
 
     public int getSerializedSize() {
@@ -517,35 +361,26 @@ public final class Messages {
       if (size != -1) return size;
 
       size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+      if (!getPipelineBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, pipeline_);
       }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+      if (!getClientBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, client_);
       }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+      if (stage_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(3, stage_);
       }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+      if (!getFunctionBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, function_);
       }
-      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+      if (!getCacheBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, cache_);
+      }
+      if (!payload_.isEmpty()) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(5, idx_);
+          .computeBytesSize(6, payload_);
       }
-      if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(6, end_);
-      }
-      if (((bitField0_ & 0x00000040) == 0x00000040)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, cache_);
-      }
-      if (((bitField0_ & 0x00000080) == 0x00000080)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(8, payload_);
-      }
-      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
@@ -562,47 +397,18 @@ public final class Messages {
       com.nfqsolutions.jpalm.Messages.PalmMessage other = (com.nfqsolutions.jpalm.Messages.PalmMessage) obj;
 
       boolean result = true;
-      result = result && (hasPipeline() == other.hasPipeline());
-      if (hasPipeline()) {
-        result = result && getPipeline()
-            .equals(other.getPipeline());
-      }
-      result = result && (hasClient() == other.hasClient());
-      if (hasClient()) {
-        result = result && getClient()
-            .equals(other.getClient());
-      }
-      result = result && (hasStage() == other.hasStage());
-      if (hasStage()) {
-        result = result && (getStage()
-            == other.getStage());
-      }
-      result = result && (hasFunction() == other.hasFunction());
-      if (hasFunction()) {
-        result = result && getFunction()
-            .equals(other.getFunction());
-      }
-      result = result && (hasIdx() == other.hasIdx());
-      if (hasIdx()) {
-        result = result && (getIdx()
-            == other.getIdx());
-      }
-      result = result && (hasEnd() == other.hasEnd());
-      if (hasEnd()) {
-        result = result && (getEnd()
-            == other.getEnd());
-      }
-      result = result && (hasCache() == other.hasCache());
-      if (hasCache()) {
-        result = result && getCache()
-            .equals(other.getCache());
-      }
-      result = result && (hasPayload() == other.hasPayload());
-      if (hasPayload()) {
-        result = result && getPayload()
-            .equals(other.getPayload());
-      }
-      result = result && unknownFields.equals(other.unknownFields);
+      result = result && getPipeline()
+          .equals(other.getPipeline());
+      result = result && getClient()
+          .equals(other.getClient());
+      result = result && (getStage()
+          == other.getStage());
+      result = result && getFunction()
+          .equals(other.getFunction());
+      result = result && getCache()
+          .equals(other.getCache());
+      result = result && getPayload()
+          .equals(other.getPayload());
       return result;
     }
 
@@ -612,42 +418,20 @@ public final class Messages {
         return memoizedHashCode;
       }
       int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
-      if (hasPipeline()) {
-        hash = (37 * hash) + PIPELINE_FIELD_NUMBER;
-        hash = (53 * hash) + getPipeline().hashCode();
-      }
-      if (hasClient()) {
-        hash = (37 * hash) + CLIENT_FIELD_NUMBER;
-        hash = (53 * hash) + getClient().hashCode();
-      }
-      if (hasStage()) {
-        hash = (37 * hash) + STAGE_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getStage());
-      }
-      if (hasFunction()) {
-        hash = (37 * hash) + FUNCTION_FIELD_NUMBER;
-        hash = (53 * hash) + getFunction().hashCode();
-      }
-      if (hasIdx()) {
-        hash = (37 * hash) + IDX_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            getIdx());
-      }
-      if (hasEnd()) {
-        hash = (37 * hash) + END_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-            getEnd());
-      }
-      if (hasCache()) {
-        hash = (37 * hash) + CACHE_FIELD_NUMBER;
-        hash = (53 * hash) + getCache().hashCode();
-      }
-      if (hasPayload()) {
-        hash = (37 * hash) + PAYLOAD_FIELD_NUMBER;
-        hash = (53 * hash) + getPayload().hashCode();
-      }
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + PIPELINE_FIELD_NUMBER;
+      hash = (53 * hash) + getPipeline().hashCode();
+      hash = (37 * hash) + CLIENT_FIELD_NUMBER;
+      hash = (53 * hash) + getClient().hashCode();
+      hash = (37 * hash) + STAGE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getStage());
+      hash = (37 * hash) + FUNCTION_FIELD_NUMBER;
+      hash = (53 * hash) + getFunction().hashCode();
+      hash = (37 * hash) + CACHE_FIELD_NUMBER;
+      hash = (53 * hash) + getCache().hashCode();
+      hash = (37 * hash) + PAYLOAD_FIELD_NUMBER;
+      hash = (53 * hash) + getPayload().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -767,21 +551,17 @@ public final class Messages {
       public Builder clear() {
         super.clear();
         pipeline_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
+
         client_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
+
         stage_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000004);
+
         function_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        idx_ = 0L;
-        bitField0_ = (bitField0_ & ~0x00000010);
-        end_ = false;
-        bitField0_ = (bitField0_ & ~0x00000020);
+
         cache_ = "";
-        bitField0_ = (bitField0_ & ~0x00000040);
+
         payload_ = com.google.protobuf.ByteString.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000080);
+
         return this;
       }
 
@@ -804,41 +584,12 @@ public final class Messages {
 
       public com.nfqsolutions.jpalm.Messages.PalmMessage buildPartial() {
         com.nfqsolutions.jpalm.Messages.PalmMessage result = new com.nfqsolutions.jpalm.Messages.PalmMessage(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
         result.pipeline_ = pipeline_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
         result.client_ = client_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
         result.stage_ = stage_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
         result.function_ = function_;
-        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
-          to_bitField0_ |= 0x00000010;
-        }
-        result.idx_ = idx_;
-        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
-          to_bitField0_ |= 0x00000020;
-        }
-        result.end_ = end_;
-        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
-          to_bitField0_ |= 0x00000040;
-        }
         result.cache_ = cache_;
-        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
-          to_bitField0_ |= 0x00000080;
-        }
         result.payload_ = payload_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -880,56 +631,33 @@ public final class Messages {
 
       public Builder mergeFrom(com.nfqsolutions.jpalm.Messages.PalmMessage other) {
         if (other == com.nfqsolutions.jpalm.Messages.PalmMessage.getDefaultInstance()) return this;
-        if (other.hasPipeline()) {
-          bitField0_ |= 0x00000001;
+        if (!other.getPipeline().isEmpty()) {
           pipeline_ = other.pipeline_;
           onChanged();
         }
-        if (other.hasClient()) {
-          bitField0_ |= 0x00000002;
+        if (!other.getClient().isEmpty()) {
           client_ = other.client_;
           onChanged();
         }
-        if (other.hasStage()) {
+        if (other.getStage() != 0L) {
           setStage(other.getStage());
         }
-        if (other.hasFunction()) {
-          bitField0_ |= 0x00000008;
+        if (!other.getFunction().isEmpty()) {
           function_ = other.function_;
           onChanged();
         }
-        if (other.hasIdx()) {
-          setIdx(other.getIdx());
-        }
-        if (other.hasEnd()) {
-          setEnd(other.getEnd());
-        }
-        if (other.hasCache()) {
-          bitField0_ |= 0x00000040;
+        if (!other.getCache().isEmpty()) {
           cache_ = other.cache_;
           onChanged();
         }
-        if (other.hasPayload()) {
+        if (other.getPayload() != com.google.protobuf.ByteString.EMPTY) {
           setPayload(other.getPayload());
         }
-        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
 
       public final boolean isInitialized() {
-        if (!hasPipeline()) {
-          return false;
-        }
-        if (!hasClient()) {
-          return false;
-        }
-        if (!hasStage()) {
-          return false;
-        }
-        if (!hasFunction()) {
-          return false;
-        }
         return true;
       }
 
@@ -950,17 +678,10 @@ public final class Messages {
         }
         return this;
       }
-      private int bitField0_;
 
       private java.lang.Object pipeline_ = "";
       /**
-       * <code>required string pipeline = 1;</code>
-       */
-      public boolean hasPipeline() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required string pipeline = 1;</code>
+       * <code>string pipeline = 1;</code>
        */
       public java.lang.String getPipeline() {
         java.lang.Object ref = pipeline_;
@@ -968,16 +689,14 @@ public final class Messages {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            pipeline_ = s;
-          }
+          pipeline_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>required string pipeline = 1;</code>
+       * <code>string pipeline = 1;</code>
        */
       public com.google.protobuf.ByteString
           getPipelineBytes() {
@@ -993,36 +712,37 @@ public final class Messages {
         }
       }
       /**
-       * <code>required string pipeline = 1;</code>
+       * <code>string pipeline = 1;</code>
        */
       public Builder setPipeline(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  
         pipeline_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string pipeline = 1;</code>
+       * <code>string pipeline = 1;</code>
        */
       public Builder clearPipeline() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        
         pipeline_ = getDefaultInstance().getPipeline();
         onChanged();
         return this;
       }
       /**
-       * <code>required string pipeline = 1;</code>
+       * <code>string pipeline = 1;</code>
        */
       public Builder setPipelineBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  checkByteStringIsUtf8(value);
+        
         pipeline_ = value;
         onChanged();
         return this;
@@ -1030,13 +750,7 @@ public final class Messages {
 
       private java.lang.Object client_ = "";
       /**
-       * <code>required string client = 2;</code>
-       */
-      public boolean hasClient() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required string client = 2;</code>
+       * <code>string client = 2;</code>
        */
       public java.lang.String getClient() {
         java.lang.Object ref = client_;
@@ -1044,16 +758,14 @@ public final class Messages {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            client_ = s;
-          }
+          client_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>required string client = 2;</code>
+       * <code>string client = 2;</code>
        */
       public com.google.protobuf.ByteString
           getClientBytes() {
@@ -1069,36 +781,37 @@ public final class Messages {
         }
       }
       /**
-       * <code>required string client = 2;</code>
+       * <code>string client = 2;</code>
        */
       public Builder setClient(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  
         client_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string client = 2;</code>
+       * <code>string client = 2;</code>
        */
       public Builder clearClient() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        
         client_ = getDefaultInstance().getClient();
         onChanged();
         return this;
       }
       /**
-       * <code>required string client = 2;</code>
+       * <code>string client = 2;</code>
        */
       public Builder setClientBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  checkByteStringIsUtf8(value);
+        
         client_ = value;
         onChanged();
         return this;
@@ -1106,31 +819,25 @@ public final class Messages {
 
       private long stage_ ;
       /**
-       * <code>required int64 stage = 3;</code>
-       */
-      public boolean hasStage() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>required int64 stage = 3;</code>
+       * <code>int64 stage = 3;</code>
        */
       public long getStage() {
         return stage_;
       }
       /**
-       * <code>required int64 stage = 3;</code>
+       * <code>int64 stage = 3;</code>
        */
       public Builder setStage(long value) {
-        bitField0_ |= 0x00000004;
+        
         stage_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int64 stage = 3;</code>
+       * <code>int64 stage = 3;</code>
        */
       public Builder clearStage() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        
         stage_ = 0L;
         onChanged();
         return this;
@@ -1138,13 +845,7 @@ public final class Messages {
 
       private java.lang.Object function_ = "";
       /**
-       * <code>required string function = 4;</code>
-       */
-      public boolean hasFunction() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>required string function = 4;</code>
+       * <code>string function = 4;</code>
        */
       public java.lang.String getFunction() {
         java.lang.Object ref = function_;
@@ -1152,16 +853,14 @@ public final class Messages {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            function_ = s;
-          }
+          function_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>required string function = 4;</code>
+       * <code>string function = 4;</code>
        */
       public com.google.protobuf.ByteString
           getFunctionBytes() {
@@ -1177,114 +876,45 @@ public final class Messages {
         }
       }
       /**
-       * <code>required string function = 4;</code>
+       * <code>string function = 4;</code>
        */
       public Builder setFunction(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  
         function_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string function = 4;</code>
+       * <code>string function = 4;</code>
        */
       public Builder clearFunction() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        
         function_ = getDefaultInstance().getFunction();
         onChanged();
         return this;
       }
       /**
-       * <code>required string function = 4;</code>
+       * <code>string function = 4;</code>
        */
       public Builder setFunctionBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  checkByteStringIsUtf8(value);
+        
         function_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long idx_ ;
-      /**
-       * <code>optional int64 idx = 5;</code>
-       */
-      public boolean hasIdx() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
-      }
-      /**
-       * <code>optional int64 idx = 5;</code>
-       */
-      public long getIdx() {
-        return idx_;
-      }
-      /**
-       * <code>optional int64 idx = 5;</code>
-       */
-      public Builder setIdx(long value) {
-        bitField0_ |= 0x00000010;
-        idx_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional int64 idx = 5;</code>
-       */
-      public Builder clearIdx() {
-        bitField0_ = (bitField0_ & ~0x00000010);
-        idx_ = 0L;
-        onChanged();
-        return this;
-      }
-
-      private boolean end_ ;
-      /**
-       * <code>optional bool end = 6;</code>
-       */
-      public boolean hasEnd() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
-      }
-      /**
-       * <code>optional bool end = 6;</code>
-       */
-      public boolean getEnd() {
-        return end_;
-      }
-      /**
-       * <code>optional bool end = 6;</code>
-       */
-      public Builder setEnd(boolean value) {
-        bitField0_ |= 0x00000020;
-        end_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional bool end = 6;</code>
-       */
-      public Builder clearEnd() {
-        bitField0_ = (bitField0_ & ~0x00000020);
-        end_ = false;
         onChanged();
         return this;
       }
 
       private java.lang.Object cache_ = "";
       /**
-       * <code>optional string cache = 7;</code>
-       */
-      public boolean hasCache() {
-        return ((bitField0_ & 0x00000040) == 0x00000040);
-      }
-      /**
-       * <code>optional string cache = 7;</code>
+       * <code>string cache = 5;</code>
        */
       public java.lang.String getCache() {
         java.lang.Object ref = cache_;
@@ -1292,16 +922,14 @@ public final class Messages {
           com.google.protobuf.ByteString bs =
               (com.google.protobuf.ByteString) ref;
           java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            cache_ = s;
-          }
+          cache_ = s;
           return s;
         } else {
           return (java.lang.String) ref;
         }
       }
       /**
-       * <code>optional string cache = 7;</code>
+       * <code>string cache = 5;</code>
        */
       public com.google.protobuf.ByteString
           getCacheBytes() {
@@ -1317,36 +945,37 @@ public final class Messages {
         }
       }
       /**
-       * <code>optional string cache = 7;</code>
+       * <code>string cache = 5;</code>
        */
       public Builder setCache(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  
         cache_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string cache = 7;</code>
+       * <code>string cache = 5;</code>
        */
       public Builder clearCache() {
-        bitField0_ = (bitField0_ & ~0x00000040);
+        
         cache_ = getDefaultInstance().getCache();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string cache = 7;</code>
+       * <code>string cache = 5;</code>
        */
       public Builder setCacheBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000040;
+  checkByteStringIsUtf8(value);
+        
         cache_ = value;
         onChanged();
         return this;
@@ -1354,46 +983,40 @@ public final class Messages {
 
       private com.google.protobuf.ByteString payload_ = com.google.protobuf.ByteString.EMPTY;
       /**
-       * <code>optional bytes payload = 8;</code>
-       */
-      public boolean hasPayload() {
-        return ((bitField0_ & 0x00000080) == 0x00000080);
-      }
-      /**
-       * <code>optional bytes payload = 8;</code>
+       * <code>bytes payload = 6;</code>
        */
       public com.google.protobuf.ByteString getPayload() {
         return payload_;
       }
       /**
-       * <code>optional bytes payload = 8;</code>
+       * <code>bytes payload = 6;</code>
        */
       public Builder setPayload(com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000080;
+  
         payload_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bytes payload = 8;</code>
+       * <code>bytes payload = 6;</code>
        */
       public Builder clearPayload() {
-        bitField0_ = (bitField0_ & ~0x00000080);
+        
         payload_ = getDefaultInstance().getPayload();
         onChanged();
         return this;
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
+        return this;
       }
 
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
+        return this;
       }
 
 
@@ -1410,7 +1033,7 @@ public final class Messages {
       return DEFAULT_INSTANCE;
     }
 
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<PalmMessage>
+    private static final com.google.protobuf.Parser<PalmMessage>
         PARSER = new com.google.protobuf.AbstractParser<PalmMessage>() {
       public PalmMessage parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
@@ -1435,994 +1058,11 @@ public final class Messages {
 
   }
 
-  public interface BrokerMessageOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:jpalm.BrokerMessage)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>required string key = 1;</code>
-     */
-    boolean hasKey();
-    /**
-     * <code>required string key = 1;</code>
-     */
-    java.lang.String getKey();
-    /**
-     * <code>required string key = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getKeyBytes();
-
-    /**
-     * <code>required bytes payload = 2;</code>
-     */
-    boolean hasPayload();
-    /**
-     * <code>required bytes payload = 2;</code>
-     */
-    com.google.protobuf.ByteString getPayload();
-
-    /**
-     * <code>optional string instruction = 3;</code>
-     */
-    boolean hasInstruction();
-    /**
-     * <code>optional string instruction = 3;</code>
-     */
-    java.lang.String getInstruction();
-    /**
-     * <code>optional string instruction = 3;</code>
-     */
-    com.google.protobuf.ByteString
-        getInstructionBytes();
-
-    /**
-     * <code>optional string pipeline = 4;</code>
-     */
-    boolean hasPipeline();
-    /**
-     * <code>optional string pipeline = 4;</code>
-     */
-    java.lang.String getPipeline();
-    /**
-     * <code>optional string pipeline = 4;</code>
-     */
-    com.google.protobuf.ByteString
-        getPipelineBytes();
-  }
-  /**
-   * Protobuf type {@code jpalm.BrokerMessage}
-   */
-  public  static final class BrokerMessage extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:jpalm.BrokerMessage)
-      BrokerMessageOrBuilder {
-    // Use BrokerMessage.newBuilder() to construct.
-    private BrokerMessage(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private BrokerMessage() {
-      key_ = "";
-      payload_ = com.google.protobuf.ByteString.EMPTY;
-      instruction_ = "";
-      pipeline_ = "";
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private BrokerMessage(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            default: {
-              if (!parseUnknownField(input, unknownFields,
-                                     extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-            case 10: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000001;
-              key_ = bs;
-              break;
-            }
-            case 18: {
-              bitField0_ |= 0x00000002;
-              payload_ = input.readBytes();
-              break;
-            }
-            case 26: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000004;
-              instruction_ = bs;
-              break;
-            }
-            case 34: {
-              com.google.protobuf.ByteString bs = input.readBytes();
-              bitField0_ |= 0x00000008;
-              pipeline_ = bs;
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.nfqsolutions.jpalm.Messages.internal_static_jpalm_BrokerMessage_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.nfqsolutions.jpalm.Messages.internal_static_jpalm_BrokerMessage_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.nfqsolutions.jpalm.Messages.BrokerMessage.class, com.nfqsolutions.jpalm.Messages.BrokerMessage.Builder.class);
-    }
-
-    private int bitField0_;
-    public static final int KEY_FIELD_NUMBER = 1;
-    private volatile java.lang.Object key_;
-    /**
-     * <code>required string key = 1;</code>
-     */
-    public boolean hasKey() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
-    }
-    /**
-     * <code>required string key = 1;</code>
-     */
-    public java.lang.String getKey() {
-      java.lang.Object ref = key_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          key_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>required string key = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getKeyBytes() {
-      java.lang.Object ref = key_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        key_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int PAYLOAD_FIELD_NUMBER = 2;
-    private com.google.protobuf.ByteString payload_;
-    /**
-     * <code>required bytes payload = 2;</code>
-     */
-    public boolean hasPayload() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
-    }
-    /**
-     * <code>required bytes payload = 2;</code>
-     */
-    public com.google.protobuf.ByteString getPayload() {
-      return payload_;
-    }
-
-    public static final int INSTRUCTION_FIELD_NUMBER = 3;
-    private volatile java.lang.Object instruction_;
-    /**
-     * <code>optional string instruction = 3;</code>
-     */
-    public boolean hasInstruction() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>optional string instruction = 3;</code>
-     */
-    public java.lang.String getInstruction() {
-      java.lang.Object ref = instruction_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          instruction_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string instruction = 3;</code>
-     */
-    public com.google.protobuf.ByteString
-        getInstructionBytes() {
-      java.lang.Object ref = instruction_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        instruction_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int PIPELINE_FIELD_NUMBER = 4;
-    private volatile java.lang.Object pipeline_;
-    /**
-     * <code>optional string pipeline = 4;</code>
-     */
-    public boolean hasPipeline() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
-    }
-    /**
-     * <code>optional string pipeline = 4;</code>
-     */
-    public java.lang.String getPipeline() {
-      java.lang.Object ref = pipeline_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        if (bs.isValidUtf8()) {
-          pipeline_ = s;
-        }
-        return s;
-      }
-    }
-    /**
-     * <code>optional string pipeline = 4;</code>
-     */
-    public com.google.protobuf.ByteString
-        getPipelineBytes() {
-      java.lang.Object ref = pipeline_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        pipeline_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    private byte memoizedIsInitialized = -1;
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      if (!hasKey()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      if (!hasPayload()) {
-        memoizedIsInitialized = 0;
-        return false;
-      }
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, key_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, payload_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, instruction_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 4, pipeline_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, key_);
-      }
-      if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, payload_);
-      }
-      if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, instruction_);
-      }
-      if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, pipeline_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    private static final long serialVersionUID = 0L;
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof com.nfqsolutions.jpalm.Messages.BrokerMessage)) {
-        return super.equals(obj);
-      }
-      com.nfqsolutions.jpalm.Messages.BrokerMessage other = (com.nfqsolutions.jpalm.Messages.BrokerMessage) obj;
-
-      boolean result = true;
-      result = result && (hasKey() == other.hasKey());
-      if (hasKey()) {
-        result = result && getKey()
-            .equals(other.getKey());
-      }
-      result = result && (hasPayload() == other.hasPayload());
-      if (hasPayload()) {
-        result = result && getPayload()
-            .equals(other.getPayload());
-      }
-      result = result && (hasInstruction() == other.hasInstruction());
-      if (hasInstruction()) {
-        result = result && getInstruction()
-            .equals(other.getInstruction());
-      }
-      result = result && (hasPipeline() == other.hasPipeline());
-      if (hasPipeline()) {
-        result = result && getPipeline()
-            .equals(other.getPipeline());
-      }
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptorForType().hashCode();
-      if (hasKey()) {
-        hash = (37 * hash) + KEY_FIELD_NUMBER;
-        hash = (53 * hash) + getKey().hashCode();
-      }
-      if (hasPayload()) {
-        hash = (37 * hash) + PAYLOAD_FIELD_NUMBER;
-        hash = (53 * hash) + getPayload().hashCode();
-      }
-      if (hasInstruction()) {
-        hash = (37 * hash) + INSTRUCTION_FIELD_NUMBER;
-        hash = (53 * hash) + getInstruction().hashCode();
-      }
-      if (hasPipeline()) {
-        hash = (37 * hash) + PIPELINE_FIELD_NUMBER;
-        hash = (53 * hash) + getPipeline().hashCode();
-      }
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static com.nfqsolutions.jpalm.Messages.BrokerMessage parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.nfqsolutions.jpalm.Messages.BrokerMessage parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.nfqsolutions.jpalm.Messages.BrokerMessage parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static com.nfqsolutions.jpalm.Messages.BrokerMessage parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static com.nfqsolutions.jpalm.Messages.BrokerMessage parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.nfqsolutions.jpalm.Messages.BrokerMessage parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.nfqsolutions.jpalm.Messages.BrokerMessage parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static com.nfqsolutions.jpalm.Messages.BrokerMessage parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static com.nfqsolutions.jpalm.Messages.BrokerMessage parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static com.nfqsolutions.jpalm.Messages.BrokerMessage parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(com.nfqsolutions.jpalm.Messages.BrokerMessage prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code jpalm.BrokerMessage}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:jpalm.BrokerMessage)
-        com.nfqsolutions.jpalm.Messages.BrokerMessageOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.nfqsolutions.jpalm.Messages.internal_static_jpalm_BrokerMessage_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.nfqsolutions.jpalm.Messages.internal_static_jpalm_BrokerMessage_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.nfqsolutions.jpalm.Messages.BrokerMessage.class, com.nfqsolutions.jpalm.Messages.BrokerMessage.Builder.class);
-      }
-
-      // Construct using com.nfqsolutions.jpalm.Messages.BrokerMessage.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      public Builder clear() {
-        super.clear();
-        key_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
-        payload_ = com.google.protobuf.ByteString.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000002);
-        instruction_ = "";
-        bitField0_ = (bitField0_ & ~0x00000004);
-        pipeline_ = "";
-        bitField0_ = (bitField0_ & ~0x00000008);
-        return this;
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.nfqsolutions.jpalm.Messages.internal_static_jpalm_BrokerMessage_descriptor;
-      }
-
-      public com.nfqsolutions.jpalm.Messages.BrokerMessage getDefaultInstanceForType() {
-        return com.nfqsolutions.jpalm.Messages.BrokerMessage.getDefaultInstance();
-      }
-
-      public com.nfqsolutions.jpalm.Messages.BrokerMessage build() {
-        com.nfqsolutions.jpalm.Messages.BrokerMessage result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      public com.nfqsolutions.jpalm.Messages.BrokerMessage buildPartial() {
-        com.nfqsolutions.jpalm.Messages.BrokerMessage result = new com.nfqsolutions.jpalm.Messages.BrokerMessage(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.key_ = key_;
-        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
-          to_bitField0_ |= 0x00000002;
-        }
-        result.payload_ = payload_;
-        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
-          to_bitField0_ |= 0x00000004;
-        }
-        result.instruction_ = instruction_;
-        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
-          to_bitField0_ |= 0x00000008;
-        }
-        result.pipeline_ = pipeline_;
-        result.bitField0_ = to_bitField0_;
-        onBuilt();
-        return result;
-      }
-
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.nfqsolutions.jpalm.Messages.BrokerMessage) {
-          return mergeFrom((com.nfqsolutions.jpalm.Messages.BrokerMessage)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(com.nfqsolutions.jpalm.Messages.BrokerMessage other) {
-        if (other == com.nfqsolutions.jpalm.Messages.BrokerMessage.getDefaultInstance()) return this;
-        if (other.hasKey()) {
-          bitField0_ |= 0x00000001;
-          key_ = other.key_;
-          onChanged();
-        }
-        if (other.hasPayload()) {
-          setPayload(other.getPayload());
-        }
-        if (other.hasInstruction()) {
-          bitField0_ |= 0x00000004;
-          instruction_ = other.instruction_;
-          onChanged();
-        }
-        if (other.hasPipeline()) {
-          bitField0_ |= 0x00000008;
-          pipeline_ = other.pipeline_;
-          onChanged();
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      public final boolean isInitialized() {
-        if (!hasKey()) {
-          return false;
-        }
-        if (!hasPayload()) {
-          return false;
-        }
-        return true;
-      }
-
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        com.nfqsolutions.jpalm.Messages.BrokerMessage parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.nfqsolutions.jpalm.Messages.BrokerMessage) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-      private int bitField0_;
-
-      private java.lang.Object key_ = "";
-      /**
-       * <code>required string key = 1;</code>
-       */
-      public boolean hasKey() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>required string key = 1;</code>
-       */
-      public java.lang.String getKey() {
-        java.lang.Object ref = key_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            key_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>required string key = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getKeyBytes() {
-        java.lang.Object ref = key_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          key_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>required string key = 1;</code>
-       */
-      public Builder setKey(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        key_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string key = 1;</code>
-       */
-      public Builder clearKey() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        key_ = getDefaultInstance().getKey();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required string key = 1;</code>
-       */
-      public Builder setKeyBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        key_ = value;
-        onChanged();
-        return this;
-      }
-
-      private com.google.protobuf.ByteString payload_ = com.google.protobuf.ByteString.EMPTY;
-      /**
-       * <code>required bytes payload = 2;</code>
-       */
-      public boolean hasPayload() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
-      }
-      /**
-       * <code>required bytes payload = 2;</code>
-       */
-      public com.google.protobuf.ByteString getPayload() {
-        return payload_;
-      }
-      /**
-       * <code>required bytes payload = 2;</code>
-       */
-      public Builder setPayload(com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000002;
-        payload_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required bytes payload = 2;</code>
-       */
-      public Builder clearPayload() {
-        bitField0_ = (bitField0_ & ~0x00000002);
-        payload_ = getDefaultInstance().getPayload();
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object instruction_ = "";
-      /**
-       * <code>optional string instruction = 3;</code>
-       */
-      public boolean hasInstruction() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>optional string instruction = 3;</code>
-       */
-      public java.lang.String getInstruction() {
-        java.lang.Object ref = instruction_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            instruction_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string instruction = 3;</code>
-       */
-      public com.google.protobuf.ByteString
-          getInstructionBytes() {
-        java.lang.Object ref = instruction_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          instruction_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string instruction = 3;</code>
-       */
-      public Builder setInstruction(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        instruction_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string instruction = 3;</code>
-       */
-      public Builder clearInstruction() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        instruction_ = getDefaultInstance().getInstruction();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string instruction = 3;</code>
-       */
-      public Builder setInstructionBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000004;
-        instruction_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object pipeline_ = "";
-      /**
-       * <code>optional string pipeline = 4;</code>
-       */
-      public boolean hasPipeline() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
-      }
-      /**
-       * <code>optional string pipeline = 4;</code>
-       */
-      public java.lang.String getPipeline() {
-        java.lang.Object ref = pipeline_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            pipeline_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string pipeline = 4;</code>
-       */
-      public com.google.protobuf.ByteString
-          getPipelineBytes() {
-        java.lang.Object ref = pipeline_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          pipeline_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string pipeline = 4;</code>
-       */
-      public Builder setPipeline(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        pipeline_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string pipeline = 4;</code>
-       */
-      public Builder clearPipeline() {
-        bitField0_ = (bitField0_ & ~0x00000008);
-        pipeline_ = getDefaultInstance().getPipeline();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string pipeline = 4;</code>
-       */
-      public Builder setPipelineBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000008;
-        pipeline_ = value;
-        onChanged();
-        return this;
-      }
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFields(unknownFields);
-      }
-
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:jpalm.BrokerMessage)
-    }
-
-    // @@protoc_insertion_point(class_scope:jpalm.BrokerMessage)
-    private static final com.nfqsolutions.jpalm.Messages.BrokerMessage DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new com.nfqsolutions.jpalm.Messages.BrokerMessage();
-    }
-
-    public static com.nfqsolutions.jpalm.Messages.BrokerMessage getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    @java.lang.Deprecated public static final com.google.protobuf.Parser<BrokerMessage>
-        PARSER = new com.google.protobuf.AbstractParser<BrokerMessage>() {
-      public BrokerMessage parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-          return new BrokerMessage(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<BrokerMessage> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<BrokerMessage> getParserForType() {
-      return PARSER;
-    }
-
-    public com.nfqsolutions.jpalm.Messages.BrokerMessage getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_jpalm_PalmMessage_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_jpalm_PalmMessage_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_jpalm_BrokerMessage_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_jpalm_BrokerMessage_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -2432,14 +1072,11 @@ public final class Messages {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016messages.proto\022\005jpalm\"\212\001\n\013PalmMessage\022" +
-      "\020\n\010pipeline\030\001 \002(\t\022\016\n\006client\030\002 \002(\t\022\r\n\005sta" +
-      "ge\030\003 \002(\003\022\020\n\010function\030\004 \002(\t\022\013\n\003idx\030\005 \001(\003\022" +
-      "\013\n\003end\030\006 \001(\010\022\r\n\005cache\030\007 \001(\t\022\017\n\007payload\030\010" +
-      " \001(\014\"T\n\rBrokerMessage\022\013\n\003key\030\001 \002(\t\022\017\n\007pa" +
-      "yload\030\002 \002(\014\022\023\n\013instruction\030\003 \001(\t\022\020\n\010pipe" +
-      "line\030\004 \001(\tB\"\n\026com.nfqsolutions.jpalmB\010Me" +
-      "ssages"
+      "\n\016messages.proto\022\005jpalm\"p\n\013PalmMessage\022\020" +
+      "\n\010pipeline\030\001 \001(\t\022\016\n\006client\030\002 \001(\t\022\r\n\005stag" +
+      "e\030\003 \001(\003\022\020\n\010function\030\004 \001(\t\022\r\n\005cache\030\005 \001(\t" +
+      "\022\017\n\007payload\030\006 \001(\014B\"\n\026com.nfqsolutions.jp" +
+      "almB\010Messagesb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -2458,13 +1095,7 @@ public final class Messages {
     internal_static_jpalm_PalmMessage_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_jpalm_PalmMessage_descriptor,
-        new java.lang.String[] { "Pipeline", "Client", "Stage", "Function", "Idx", "End", "Cache", "Payload", });
-    internal_static_jpalm_BrokerMessage_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_jpalm_BrokerMessage_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_jpalm_BrokerMessage_descriptor,
-        new java.lang.String[] { "Key", "Payload", "Instruction", "Pipeline", });
+        new java.lang.String[] { "Pipeline", "Client", "Stage", "Function", "Cache", "Payload", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

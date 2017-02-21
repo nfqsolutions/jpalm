@@ -24,7 +24,6 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -344,7 +343,7 @@ public class Client implements AutoCloseable {
 
                     @Override
                     public void remove() {
-                        throw new NotImplementedException();
+                        throw new UnsupportedOperationException();
                     }
                 };
             }
