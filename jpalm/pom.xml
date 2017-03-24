@@ -11,7 +11,7 @@
   <url>https://nfqsolutions.github.io/pylm/</url>
 
   <properties>
-    <jpalm.version>0.1.1</jpalm.version>
+    <jpalm.version>0.1.2</jpalm.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <junit.version>4.8.2</junit.version>
     <log4j.version>1.2.16</log4j.version>

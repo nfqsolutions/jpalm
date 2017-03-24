@@ -350,6 +350,26 @@ public class Client implements AutoCloseable {
         };
     }
 
+    private static String joinString(final List<String> strings) {
+        StringBuilder str = new StringBuilder();
+        for(final String s : strings)
+            str.append(s).append(" ");
+        return str.toString();
+    }
+
+    /**
+     * Send a pipelined job
+     *
+     * @param functions: functions to execute
+     * @param generator: data to provide
+     * @param cache: cache
+     * @param messages: number of messages
+     * @return
+     */
+    public Iterable<ByteString> job(final List<String> functions, final Iterable<ByteString> generator, final String cache, final int messages) {
+        return job(joinString(functions), generator, cache, messages);
+    }
+
     /**
      * Send Job
      *
@@ -372,8 +392,16 @@ public class Client implements AutoCloseable {
         return recv_multipart(sub_socket, messages);
     }
 
+    public Iterable<ByteString> job(final List<String> functions, final Iterable<ByteString> generator, final String cache) {
+        return job(joinString(functions), generator, cache);
+    }
+
     public Iterable<ByteString> job(final String function, final Iterable<ByteString> generator, final String cache) {
         return job(function, generator, cache, Integer.MAX_VALUE);
+    }
+
+    public Iterable<String> jobString(final List<String> functions, final Iterable<ByteString> generator, final String cache, final int messages) {
+        return jobString(joinString(functions), generator, cache, messages);
     }
 
     public Iterable<String> jobString(final String function, final Iterable<ByteString> generator, final String cache, final int messages) {
@@ -388,6 +416,10 @@ public class Client implements AutoCloseable {
         return recv_multipartString(sub_socket, messages);
     }
 
+    public Iterable<String> jobString(final List<String> functions, final Iterable<ByteString> generator, final int messages) {
+        return jobString(joinString(functions), generator, messages);
+    }
+
     public Iterable<String> jobString(final String function, final Iterable<ByteString> generator, final int messages) {
         final ZMQ.Socket sub_socket = ctx.createSocket(ZMQ.SUB);
         sub_socket.connect(this.sub_address);
@@ -398,6 +430,20 @@ public class Client implements AutoCloseable {
         sender_thread.start();
 
         return recv_multipartString(sub_socket, messages);
+    }
+
+    /**
+     * Send Pipelined Job
+     *
+     * @param functions: functions to execute
+     * @param item: data to provide
+     * @param cache: cache
+     * @param messages: number of messages
+     *
+     * @return result of the function
+     */
+    public Iterable<ByteString> job(final List<String> functions, final ByteString item, final String cache, final int messages) {
+        return job(joinString(functions), item, cache, messages);
     }
 
     /**
@@ -422,8 +468,16 @@ public class Client implements AutoCloseable {
         return recv_multipart(sub_socket, messages);
     }
 
+    public Iterable<ByteString> job(final List<String> functions, final ByteString item, final String cache) {
+        return job(joinString(functions), item, cache, Integer.MAX_VALUE);
+    }
+
     public Iterable<ByteString> job(final String function, final ByteString item, final String cache) {
         return job(function, item, cache, Integer.MAX_VALUE);
+    }
+
+    public Iterable<String> jobString(final List<String> functions, final ByteString item, final String cache, final int messages) {
+        return jobString(joinString(functions), item, cache, messages);
     }
 
     public Iterable<String> jobString(final String function, final ByteString item, final String cache, final int messages) {
@@ -438,6 +492,10 @@ public class Client implements AutoCloseable {
         return recv_multipartString(sub_socket, messages);
     }
 
+    public Iterable<String> jobString(final List<String> functions, final ByteString item, final int messages) {
+        return jobString(joinString(functions), item, messages);
+    }
+
     public Iterable<String> jobString(final String function, final ByteString item, final int messages) {
         final ZMQ.Socket sub_socket = ctx.createSocket(ZMQ.SUB);
         sub_socket.connect(this.sub_address);
@@ -448,6 +506,23 @@ public class Client implements AutoCloseable {
         sender_thread.start();
 
         return recv_multipartString(sub_socket, messages);
+    }
+
+    /**
+     *
+     * Execute single evaluation pipelined.
+     *
+     * @param functions: functions to execute
+     * @param payload: data
+     * @param messages number of messages
+     * @param cache: cache
+     * @throws ClientException if something wrong if something wrong
+     *
+     * @return List of results
+     */
+    public List<ByteString> eval(final List<String> functions, final ByteString payload,
+                                 final int messages, final String cache) throws ClientException {
+        return eval(joinString(functions), payload, messages, cache);
     }
 
     /**
@@ -486,6 +561,22 @@ public class Client implements AutoCloseable {
 
     /**
      *
+     * Execute single evaluation pipelined.
+     *
+     * @param functions: function to execute
+     * @param payload: data
+     * @param messages number of messages
+     *
+     * @return List of results
+     * @throws ClientException if something wrong
+     */
+    public List<ByteString> eval(final List<String> functions, final ByteString payload,
+                                 final int messages) throws ClientException {
+        return eval(joinString(functions), payload, messages);
+    }
+
+    /**
+     *
      * Execute single evaluation.
      *
      * @param function: function to execute
@@ -498,6 +589,22 @@ public class Client implements AutoCloseable {
     public List<ByteString> eval(final String function, final ByteString payload,
                                  final int messages) throws ClientException {
         return eval(function, payload, messages, null);
+    }
+
+    /**
+     *
+     * Execute single evaluation pipelined.
+     *
+     * @param functions: function to execute
+     * @param payload: data
+     * @param cache cache
+     *
+     * @return List of results
+     * @throws ClientException if something wrong
+     */
+    public ByteString eval(final List<String> functions, final ByteString payload,
+                           final String cache) throws ClientException {
+        return eval(joinString(functions), payload, 1, cache).get(0);
     }
 
     /**
@@ -518,6 +625,20 @@ public class Client implements AutoCloseable {
 
     /**
      *
+     * Execute single evaluation pipelined.
+     *
+     * @param functions: functions to execute
+     * @param payload: data
+     *
+     * @return List of results
+     * @throws ClientException if something wrong
+     */
+    public ByteString eval(final List<String> functions, final ByteString payload) throws ClientException {
+        return eval(joinString(functions), payload, 1, null).get(0);
+    }
+
+    /**
+     *
      * Execute single evaluation.
      *
      * @param function: function to execute
@@ -528,6 +649,23 @@ public class Client implements AutoCloseable {
      */
     public ByteString eval(final String function, final ByteString payload) throws ClientException {
         return eval(function, payload, 1, null).get(0);
+    }
+
+    /**
+     *
+     * Execute single evaluation pipelined.
+     *
+     * @param functions functions to execute
+     * @param payload: must implement toString
+     * @param messages number of messages
+     * @param cache cache
+     *
+     * @return List of results
+     * @throws ClientException if something wrong
+     */
+    public List<ByteString> eval(final List<String> functions, final Object payload,
+                                 final int messages, final String cache) throws ClientException {
+        return eval(joinString(functions), ByteString.copyFromUtf8(payload.toString()), messages, cache);
     }
 
     /**
@@ -549,6 +687,22 @@ public class Client implements AutoCloseable {
 
     /**
      *
+     * Execute single evaluation pipelined.
+     *
+     * @param functions functions to execute
+     * @param payload: must implement toString
+     * @param messages number of messages
+     *
+     * @return List of results
+     * @throws ClientException if something wrong
+     */
+    public List<ByteString> eval(final List<String> functions, final Object payload,
+                                 final int messages) throws ClientException {
+        return eval(joinString(functions), ByteString.copyFromUtf8(payload.toString()), messages, null);
+    }
+
+    /**
+     *
      * Execute single evaluation.
      *
      * @param function function to execute
@@ -561,6 +715,22 @@ public class Client implements AutoCloseable {
     public List<ByteString> eval(final String function, final Object payload,
                                  final int messages) throws ClientException {
         return eval(function, ByteString.copyFromUtf8(payload.toString()), messages, null);
+    }
+
+    /**
+     *
+     * Execute single evaluation pipelined.
+     *
+     * @param functions functions to execute
+     * @param payload: must implement toString
+     * @param cache cache
+     *
+     * @return List of results
+     * @throws ClientException if something wrong
+     */
+    public ByteString eval(final List<String> functions, final Object payload,
+                           final String cache) throws ClientException {
+        return eval(joinString(functions), ByteString.copyFromUtf8(payload.toString()), 1, cache).get(0);
     }
 
     /**
@@ -581,6 +751,20 @@ public class Client implements AutoCloseable {
 
     /**
      *
+     * Execute single evaluation pipelined.
+     *
+     * @param functions functions to execute
+     * @param payload: must implement toString
+     *
+     * @return List of results
+     * @throws ClientException if something wrong
+     */
+    public ByteString eval(final List<String> functions, final Object payload) throws ClientException {
+        return eval(joinString(functions), ByteString.copyFromUtf8(payload.toString()), 1, null).get(0);
+    }
+
+    /**
+     *
      * Execute single evaluation.
      *
      * @param function function to execute
@@ -591,6 +775,11 @@ public class Client implements AutoCloseable {
      */
     public ByteString eval(final String function, final Object payload) throws ClientException {
         return eval(function, ByteString.copyFromUtf8(payload.toString()), 1, null).get(0);
+    }
+
+    public List<String> evalString(final List<String> functions, final ByteString payload,
+                                   final int messages, final String cache) throws ClientException {
+        return evalString(joinString(functions), payload, messages, cache);
     }
 
     public List<String> evalString(final String function, final ByteString payload,
@@ -617,6 +806,22 @@ public class Client implements AutoCloseable {
 
     /**
      *
+     * Execute single evaluation pipelined.
+     *
+     * @param functions functions to execute
+     * @param payload data
+     * @param messages number of messages
+     *
+     * @return List of results
+     * @throws ClientException if something wrong
+     */
+    public List<String> evalString(final List<String> functions, final ByteString payload,
+                                   final int messages) throws ClientException {
+        return evalString(joinString(functions), payload, messages, null);
+    }
+
+    /**
+     *
      * Execute single evaluation.
      *
      * @param function function to execute
@@ -629,6 +834,22 @@ public class Client implements AutoCloseable {
     public List<String> evalString(final String function, final ByteString payload,
                                  final int messages) throws ClientException {
         return evalString(function, payload, messages, null);
+    }
+
+    /**
+     *
+     * Execute single evaluation pipelined.
+     *
+     * @param functions functions to execute
+     * @param payload data
+     * @param cache cache
+     *
+     * @return List of results
+     * @throws ClientException if something wrong
+     */
+    public String evalString(final List<String> functions, final ByteString payload,
+                             final String cache) throws ClientException {
+        return evalString(joinString(functions), payload, 1, cache).get(0);
     }
 
     /**
@@ -649,6 +870,20 @@ public class Client implements AutoCloseable {
 
     /**
      *
+     * Execute single evaluation pipelined.
+     *
+     * @param functions function to execute
+     * @param payload data
+     *
+     * @return List of results
+     * @throws ClientException if something wrong
+     */
+    public String evalString(final List<String> functions, final ByteString payload) throws ClientException {
+        return evalString(joinString(functions), payload, 1, null).get(0);
+    }
+
+    /**
+     *
      * Execute single evaluation.
      *
      * @param function function to execute
@@ -659,6 +894,23 @@ public class Client implements AutoCloseable {
      */
     public String evalString(final String function, final ByteString payload) throws ClientException {
         return evalString(function, payload, 1, null).get(0);
+    }
+
+    /**
+     *
+     * Execute single evaluation pipelined.
+     *
+     * @param functions functions to execute
+     * @param payload: must implement toString
+     * @param messages number of messages
+     * @param cache cache
+     *
+     * @return List of results
+     * @throws ClientException if something wrong
+     */
+    public List<String> evalString(final List<String> functions, final Object payload,
+                                   final int messages, final String cache) throws ClientException {
+        return evalString(joinString(functions), ByteString.copyFromUtf8(payload.toString()), messages, cache);
     }
 
     /**
@@ -682,6 +934,22 @@ public class Client implements AutoCloseable {
      *
      * Execute single evaluation.
      *
+     * @param functions functions to execute
+     * @param payload: must implement toString
+     * @param messages number of messages
+     *
+     * @return List of results
+     * @throws ClientException if something wrong
+     */
+    public List<String> evalString(final List<String> functions, final Object payload,
+                                   final int messages) throws ClientException {
+        return evalString(joinString(functions), ByteString.copyFromUtf8(payload.toString()), messages, null);
+    }
+
+    /**
+     *
+     * Execute single evaluation.
+     *
      * @param function function to execute
      * @param payload: must implement toString
      * @param messages number of messages
@@ -692,6 +960,22 @@ public class Client implements AutoCloseable {
     public List<String> evalString(final String function, final Object payload,
                                  final int messages) throws ClientException {
         return evalString(function, ByteString.copyFromUtf8(payload.toString()), messages, null);
+    }
+
+    /**
+     *
+     * Execute single evaluation pipelined.
+     *
+     * @param functions functions to execute
+     * @param payload: must implement toString
+     * @param cache cache
+     *
+     * @return List of results
+     * @throws ClientException if something wrong
+     */
+    public String evalString(final List<String> functions, final Object payload,
+                             final String cache) throws ClientException {
+        return evalString(joinString(functions), ByteString.copyFromUtf8(payload.toString()), 1, cache).get(0);
     }
 
     /**
@@ -708,6 +992,20 @@ public class Client implements AutoCloseable {
     public String evalString(final String function, final Object payload,
                                  final String cache) throws ClientException {
         return evalString(function, ByteString.copyFromUtf8(payload.toString()), 1, cache).get(0);
+    }
+
+    /**
+     *
+     * Execute single evaluation pipelined.
+     *
+     * @param functions functions to execute
+     * @param payload: must implement toString
+     *
+     * @return List of results
+     * @throws ClientException if something wrong
+     */
+    public String evalString(final List<String> functions, final Object payload) throws ClientException {
+        return evalString(joinString(functions), ByteString.copyFromUtf8(payload.toString()), 1, null).get(0);
     }
 
     /**
