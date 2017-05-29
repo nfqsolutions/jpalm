@@ -242,7 +242,7 @@ public class Client implements AutoCloseable {
             this.push_address = this.getString("pull_address");
         }
         else {
-            this.push_address = sub_address;
+            this.push_address = push_address;
         }
 
         logger.info("CLIENT" + uuid + " database address: " + db_address);
